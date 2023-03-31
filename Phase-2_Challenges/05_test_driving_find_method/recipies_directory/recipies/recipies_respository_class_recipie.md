@@ -1,4 +1,4 @@
-# {{TABLE NAME}} Model and Repository Classes Design Recipe
+# RECIPIES DIRECTORY Model and Repository Classes Design Recipe
 
 _Copy this recipe template to design and implement Model and Repository classes for a database table._
 
@@ -41,15 +41,11 @@ psql -h 127.0.0.1 recipies_directory_test < seeds_recipies.sql
 Usually, the Model class name will be the capitalised table name (single instead of plural). The same name is then suffixed by `Repository` for the Repository class name.
 
 ```ruby
-
-# Model class
-# (in lib/student.rb)
 class Recipies
 
 end
 
-# Repository class
-# (in lib/student_repository.rb)
+
 class RecipiesRepository
 
 end
@@ -77,12 +73,6 @@ Your Repository class will need to implement methods for each "read" or "write" 
 Using comments, define the method signatures (arguments and return value) and what they do - write up the SQL queries that will be used by each method.
 
 ```ruby
-# EXAMPLE
-# Table name: students
-
-# Repository class
-# (in lib/student_repository.rb)
-
 class RecipiesRepository
 
   # Selecting all records
@@ -123,35 +113,43 @@ Write Ruby code that defines the expected behaviour of the Repository class, fol
 These examples will later be encoded as RSpec tests.
 
 ```ruby
-# EXAMPLES
 
-# 1
-# Get all students
+# Get all recipies
 
-repo = StudentRepository.new
+repo = RecipiesRepository.new
 
-students = repo.all
+recipies = repo.all
 
-students.length # =>  2
+reipies.length # =>  2
 
-students[0].id # =>  1
-students[0].name # =>  'David'
-students[0].cohort_name # =>  'April 2022'
-
-students[1].id # =>  2
-students[1].name # =>  'Anna'
-students[1].cohort_name # =>  'May 2022'
+recipies[0].id # =>  1
+recipies[0].name # =>  'Fried Egg'
+recipies[0].cooking_time # =>  2
+recipies[0].rating # =>  4
 
 # 2
-# Get a single student
+# Return the 'Fried Egg' recipie
 
-repo = StudentRepository.new
+repo = RecipiesRepository.new
 
-student = repo.find(1)
+recipies = repo.find(1)
 
-student.id # =>  1
-student.name # =>  'David'
-student.cohort_name # =>  'April 2022'
+recipies.id # =>  1
+recipies.name # =>  'Fried Egg'
+recipies.cooking_time # =>  2
+recipies.rating # =>  4
+
+# 3
+# Return the 'Toast' recipie
+
+repo = RecipiesRepository.new
+
+recipies = repo.find(2)
+
+recipies.id # =>  2
+recipies.name # =>  'Toast'
+recipies.cooking_time # =>  2
+recipies.rating # =>  3
 
 # Add more examples for each method
 ```
@@ -169,15 +167,15 @@ This is so you get a fresh table contents every time you run the test suite.
 
 # file: spec/student_repository_spec.rb
 
-def reset_students_table
-  seed_sql = File.read('spec/seeds_students.sql')
-  connection = PG.connect({ host: '127.0.0.1', dbname: 'students' })
+def reset_recipies_table
+  seed_sql = File.read('spec/seeds_recipies.sql')
+  connection = PG.connect({ host: '127.0.0.1', dbname: 'recipies_directory_test' })
   connection.exec(seed_sql)
 end
 
-describe StudentRepository do
+describe RecipiesRepository do
   before(:each) do 
-    reset_students_table
+    reset_recipies_table
   end
 
   # (your tests will go here).

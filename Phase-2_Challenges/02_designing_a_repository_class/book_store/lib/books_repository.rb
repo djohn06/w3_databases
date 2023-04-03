@@ -1,4 +1,4 @@
-require 'books'
+require_relative './books'
 
 class BooksRepository
     def all
